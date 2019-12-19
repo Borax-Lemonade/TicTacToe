@@ -1,0 +1,45 @@
+
+
+function move():
+    **bestScore = -Infinity
+    for (all spots on current board):
+        if (spot is available):
+            --make a copy of the board
+            --set [row][column] of the board copy to our current position in the for loop
+            --score our position by calling the minimax(board, depth, isMaximizing)
+            if (score > bestScore):
+                --bestScore = score
+                --moveRow = current row
+                --moveColumn = current column
+
+
+function checkWinner():
+    see if theres a winner and if there is return either "X" or "O" or "tie"
+    if there isn't return null
+
+function miniMax(char[][] board, int depth, isMaximizing):
+
+    // check if the game is in a terminal state and if so return the score
+    **result = checkWinner()
+    if (result != null):
+        if(result == ourPlayer):
+            return 10
+        else if(result == enemyPlayer):
+            return -10
+
+    if isMaximizing:
+        bestScore = -INFINITY
+        for each move in board:
+            value = minimax(board, depth+1, false)
+            bestVal = max(bestVal, val)
+        return bestVal
+
+    else:
+        bestVal = +INFINITY
+        for each move in board:
+            value = minimax(board, depth+1, true)
+            bestVal = max(bestVal, val)
+        return bestVal
+
+    
+
