@@ -155,12 +155,13 @@ public class Dooley_Jon extends Player {
         } else if (state == enemyScore) {
             return (double)enemyScore;
         } else if (isMovesLeft(gameBoardCopy) == false) {
-            return 0;
+            return (double)0;
         }
 
+        
         // if this is the maximizer's move
         if (isMaximizingPlayer) {
-            double bestVal = Double.NEGATIVE_INFINITY;
+            double best = -1000;
 
             // loop through all cells in board
             for (int row = 0; row < 3; row++) {
@@ -176,7 +177,7 @@ public class Dooley_Jon extends Player {
 
                         // get the score of the move we just made by recursively calling the
                         // miniMax algorithm
-                        bestVal = Math.max(bestVal, miniMax(gameBoardCopy, depth+1, !isMaximizingPlayer));
+                        best = Math.max(best, miniMax(gameBoardCopy, depth+1, false));
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
@@ -184,12 +185,12 @@ public class Dooley_Jon extends Player {
 
                 }
             }
-            return bestVal;
+            return best;
         }
 
         // if this is the minimizer's move
         else {
-            double bestVal = Double.POSITIVE_INFINITY;
+            double best = 1000;
 
             // loop through all cells in board
             for (int row = 0; row < 3; row++) {
@@ -204,14 +205,14 @@ public class Dooley_Jon extends Player {
                         gameBoardCopy[row][column] = enemyPlayer;
 
                         // get the score of the move we just made by recursively calling the miniMax algorithm
-                        bestVal = Math.min(bestVal, minimax(gameBoardCopy, depth+1, !isMaximizingPlayer));
+                        best = Math.min(best, miniMax(gameBoardCopy,  depth + 1, true)); 
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
                     }
                 }
             }
-            return bestVal;
+            return best;
         }
     }
 
