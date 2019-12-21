@@ -1,5 +1,6 @@
 import java.util.Dictionary;
 import java.util.Map;
+import java.lang.Math;
 
 public class Dooley_Jon extends Player {
 
@@ -37,7 +38,7 @@ public class Dooley_Jon extends Player {
                     gameBoardCopy[row][column] = ourPlayer;
 
                     // compute evaluation for this move
-                    int value = miniMax(gameBoardCopy, 0, false);
+                    double value = miniMax(gameBoardCopy, 0, false);
 
                     // undo the move
                     gameBoardCopy[row][column] = boardValue;
@@ -145,7 +146,7 @@ public class Dooley_Jon extends Player {
         }
     }
 
-    public int miniMax(char[][] gameBoardCopy, int depth, boolean isMaximizingPlayer) {
+    public double miniMax(char[][] gameBoardCopy, int depth, boolean isMaximizingPlayer) {
 
         // check to see if the game is in a terminal state
         int state = terminalState(gameBoardCopy);
@@ -159,7 +160,7 @@ public class Dooley_Jon extends Player {
 
         // if this is the maximizer's move
         if (isMaximizingPlayer) {
-            double bestVal = -1000;
+            double bestVal = Double.NEGATIVE_INFINITY;
 
             // loop through all cells in board
             for (int row = 0; row < 3; row++) {
@@ -183,12 +184,12 @@ public class Dooley_Jon extends Player {
 
                 }
             }
-            return (int)bestVal;
+            return bestVal;
         }
 
         // if this is the minimizer's move
         else {
-            double bestVal = 1000;
+            double bestVal = Double.POSITIVE_INFINITY;
 
             // loop through all cells in board
             for (int row = 0; row < 3; row++) {
@@ -210,7 +211,7 @@ public class Dooley_Jon extends Player {
                     }
                 }
             }
-            return (int)bestVal;
+            return bestVal;
         }
     }
 
