@@ -24,31 +24,38 @@ public class Dooley_Jon extends Player {
         char[][] gameBoardCopy = gameBoard;
         double bestVal = Double.NEGATIVE_INFINITY;
 
-        // loop through all cells in gameboard
-        for (int row = 0; row < 3; row++) {
-            for (int column = 0 ; column < 3; column++) {
+        // if middle block is empty, go there
+        if (!(gameBoardCopy[1][1] == 'X' || gameBoardCopy[1][1] == 'O')) {
+            nextMoveRow = 1;
+            nextMoveColumn = 1;
+        }
+        else {
+            // loop through all cells in gameboard
+            for (int row = 0; row < 3; row++) {
+                for (int column = 0 ; column < 3; column++) {
 
-                // check if cell is empty
-                if (!(gameBoardCopy[row][column] == 'X' || gameBoardCopy[row][column] == 'O')) {
+                    // check if cell is empty
+                    if (!(gameBoardCopy[row][column] == 'X' || gameBoardCopy[row][column] == 'O')) {
 
-                    // save the current board value
-                    char boardValue = gameBoardCopy[row][column];
+                        // save the current board value
+                        char boardValue = gameBoardCopy[row][column];
 
-                    // make move at this empty cell
-                    gameBoardCopy[row][column] = ourPlayer;
+                        // make move at this empty cell
+                        gameBoardCopy[row][column] = ourPlayer;
 
-                    // compute evaluation for this move
-                    double value = miniMax(gameBoardCopy, 0, false);
+                        // compute evaluation for this move
+                        double value = miniMax(gameBoardCopy, 0, false);
 
-                    // undo the move
-                    gameBoardCopy[row][column] = boardValue;
+                        // undo the move
+                        gameBoardCopy[row][column] = boardValue;
 
-                    // if the value of the current move is more
-                    // than the best value, then update the best
-                    if (value > bestVal) {
-                        nextMoveRow = row;
-                        nextMoveColumn = column;
-                        bestVal = value;
+                        // if the value of the current move is more
+                        // than the best value, then update the best
+                        if (value > bestVal) {
+                            nextMoveRow = row;
+                            nextMoveColumn = column;
+                            bestVal = value;
+                        }
                     }
                 }
             }
@@ -63,66 +70,84 @@ public class Dooley_Jon extends Player {
     // return public static variable "ourScore" if game is won by our player
     // return public static variable "enemyScore" if game is won by enemy player
     public int terminalState(char[][] gameBoardCopy) {
-
-        // loop through every top column on the board
-        for (int column = 0; column < 3; column++) {
-            // if the current column all the way down is filled with our player's char, we won
-            if (gameBoardCopy[0][column] == ourPlayer) {
-                if (gameBoardCopy[0][column] == ourPlayer && 
-                        gameBoardCopy[1][column] == ourPlayer &&
-                        gameBoardCopy[2][column] == ourPlayer) {
-                            return ourScore;
-                } 
-            }
-
-            // if the current column all the way down is filled with our enemy's char, they won
-            else if (gameBoardCopy[0][column] == enemyPlayer) {
-                if (gameBoardCopy[0][column] == enemyPlayer && 
-                        gameBoardCopy[1][column] == enemyPlayer &&
-                        gameBoardCopy[2][column] == enemyPlayer) {
-                            return enemyScore;
-                } 
-            }
+        // check columns
+        if (gameBoardCopy[0][0] == ourPlayer &&
+                gameBoardCopy[1][0] == ourPlayer &&
+                gameBoardCopy[2][0] == ourPlayer) {
+                    return ourScore;
+        } else if (gameBoardCopy[0][1] == ourPlayer &&
+                gameBoardCopy[1][1] == ourPlayer &&
+                gameBoardCopy[2][1] == ourPlayer) {
+                    return ourScore;
+        } else if (gameBoardCopy[0][2] == ourPlayer &&
+                gameBoardCopy[1][2] == ourPlayer &&
+                gameBoardCopy[2][2] == ourPlayer) {
+                    return ourScore;
+        } 
+        
+        else if (gameBoardCopy[0][0] == enemyPlayer &&
+                gameBoardCopy[1][0] == enemyPlayer &&
+                gameBoardCopy[2][0] == enemyPlayer) {
+                    return enemyScore;
+        } else if (gameBoardCopy[0][1] == enemyPlayer &&
+                gameBoardCopy[1][1] == enemyPlayer &&
+                gameBoardCopy[2][1] == enemyPlayer) {
+                    return enemyScore;
+        } else if (gameBoardCopy[0][2] == enemyPlayer &&
+                gameBoardCopy[1][2] == enemyPlayer &&
+                gameBoardCopy[2][2] == enemyPlayer) {
+                    return enemyScore;
         }
 
-        // loop through every row on the board
-        for (int row = 0; row < 3; row++) {
-            // if the current row all the way to the right is filled with our player's char, we won
-            if (gameBoardCopy[row][0] == ourPlayer) {
-                if (gameBoardCopy[row][0] == ourPlayer &&
-                        gameBoardCopy[row][1] == ourPlayer &&
-                        gameBoardCopy[row][2] == ourPlayer) {
-                            return ourScore;
-                }
-            }
 
-            // if the current row all the way to the right is filled with our enemy's char, they won
-            if (gameBoardCopy[row][0] == ourPlayer) {
-                if (gameBoardCopy[row][0] == ourPlayer &&
-                        gameBoardCopy[row][1] == ourPlayer &&
-                        gameBoardCopy[row][2] == ourPlayer) {
-                            return ourScore;
-                }
-            }
+        // check rows
+        else if (gameBoardCopy[0][0] == ourPlayer &&
+                gameBoardCopy[0][1] == ourPlayer &&
+                gameBoardCopy[0][2] == ourPlayer) {
+                    return ourScore;
+        } else if (gameBoardCopy[1][0] == ourPlayer &&
+                gameBoardCopy[1][1] == ourPlayer &&
+                gameBoardCopy[1][2] == ourPlayer) {
+                    return ourScore;
+        } else if (gameBoardCopy[2][0] == ourPlayer &&
+                gameBoardCopy[2][1] == ourPlayer &&
+                gameBoardCopy[2][2] == ourPlayer) {
+                    return ourScore;
+        }
+
+        else if (gameBoardCopy[0][0] == enemyPlayer &&
+                gameBoardCopy[0][1] == enemyPlayer &&
+                gameBoardCopy[0][2] == enemyPlayer) {
+                    return enemyScore;
+        } else if (gameBoardCopy[1][0] == enemyPlayer &&
+                gameBoardCopy[1][1] == enemyPlayer &&
+                gameBoardCopy[1][2] == enemyPlayer) {
+                    return enemyScore;
+        } else if (gameBoardCopy[2][0] == enemyPlayer &&
+                gameBoardCopy[2][1] == enemyPlayer &&
+                gameBoardCopy[2][2] == enemyPlayer) {
+                    return enemyScore;
         }
 
         // check diagonals
-        if (gameBoardCopy[0][0] == ourPlayer &&
+        else if (gameBoardCopy[0][0] == ourPlayer &&
                 gameBoardCopy[1][1] == ourPlayer &&
                 gameBoardCopy[2][2] == ourPlayer) {
                     return ourScore;
         } else if (gameBoardCopy[0][2] == ourPlayer &&
-                    gameBoardCopy[1][1] == ourPlayer &&
-                    gameBoardCopy[2][0] == ourPlayer) {
-                        return ourScore;
-        } else if (gameBoardCopy[0][0] == enemyPlayer &&
-                    gameBoardCopy[1][1] == enemyPlayer &&
-                    gameBoardCopy[2][2] == enemyPlayer) {
-                        return enemyScore;
+                gameBoardCopy[1][1] == ourPlayer &&
+                gameBoardCopy[2][0] == ourPlayer) {
+                    return ourScore;
+        }
+
+        else if (gameBoardCopy[0][0] == enemyPlayer &&
+        gameBoardCopy[1][1] == enemyPlayer &&
+        gameBoardCopy[2][2] == enemyPlayer) {
+            return enemyScore;
         } else if (gameBoardCopy[0][2] == enemyPlayer &&
-                    gameBoardCopy[1][1] == enemyPlayer &&
-                    gameBoardCopy[2][0] == enemyPlayer) {
-                        return enemyScore;
+        gameBoardCopy[1][1] == enemyPlayer &&
+        gameBoardCopy[2][0] == enemyPlayer) {
+            return enemyScore;
         }
 
         return 0;
@@ -177,12 +202,11 @@ public class Dooley_Jon extends Player {
 
                         // get the score of the move we just made by recursively calling the
                         // miniMax algorithm
-                        best = Math.max(best, miniMax(gameBoardCopy, depth+1, false));
+                        best = Math.max(best, miniMax(gameBoardCopy, depth + 1, !isMaximizingPlayer));
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
                     }
-
                 }
             }
             return best;
@@ -205,7 +229,7 @@ public class Dooley_Jon extends Player {
                         gameBoardCopy[row][column] = enemyPlayer;
 
                         // get the score of the move we just made by recursively calling the miniMax algorithm
-                        best = Math.min(best, miniMax(gameBoardCopy,  depth + 1, true)); 
+                        best = Math.min(best, miniMax(gameBoardCopy,  depth + 1, !isMaximizingPlayer)); 
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
