@@ -151,9 +151,9 @@ public class Dooley_Jon extends Player {
         // check to see if the game is in a terminal state
         int state = terminalState(gameBoardCopy);
         if (state == ourScore) {
-            return ourScore;
+            return (double)ourScore;
         } else if (state == enemyScore) {
-            return enemyScore;
+            return (double)enemyScore;
         } else if (isMovesLeft(gameBoardCopy) == false) {
             return 0;
         }
