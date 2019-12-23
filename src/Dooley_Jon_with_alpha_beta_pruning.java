@@ -25,41 +25,36 @@ public class Dooley_Jon extends Player {
         double bestVal = Double.NEGATIVE_INFINITY;
 
         // if middle block is empty, go there
-        if (!(gameBoardCopy[1][1] == 'X' || gameBoardCopy[1][1] == 'O')) {
-            nextMoveRow = 1;
-            nextMoveColumn = 1;
-        }
-        else {
-            // loop through all cells in gameboard
-            for (int row = 0; row < 3; row++) {
-                for (int column = 0 ; column < 3; column++) {
+        // loop through all cells in gameboard
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0 ; column < 3; column++) {
 
-                    // check if cell is empty
-                    if (!(gameBoardCopy[row][column] == 'X' || gameBoardCopy[row][column] == 'O')) {
+                // check if cell is empty
+                if (!(gameBoardCopy[row][column] == 'X' || gameBoardCopy[row][column] == 'O')) {
 
-                        // save the current board value
-                        char boardValue = gameBoardCopy[row][column];
+                    // save the current board value
+                    char boardValue = gameBoardCopy[row][column];
 
-                        // make move at this empty cell
-                        gameBoardCopy[row][column] = ourPlayer;
+                    // make move at this empty cell
+                    gameBoardCopy[row][column] = ourPlayer;
 
-                        // compute evaluation for this move
-                        double value = miniMax(gameBoardCopy, 0, false);
+                    // compute evaluation for this move
+                    double value = miniMax(gameBoardCopy, 0, false, Double.MIN_VALUE, Double.MAX_VALUE);
 
-                        // undo the move
-                        gameBoardCopy[row][column] = boardValue;
+                    // undo the move
+                    gameBoardCopy[row][column] = boardValue;
 
-                        // if the value of the current move is more
-                        // than the best value, then update the best
-                        if (value > bestVal) {
-                            nextMoveRow = row;
-                            nextMoveColumn = column;
-                            bestVal = value;
-                        }
+                    // if the value of the current move is more
+                    // than the best value, then update the best
+                    if (value > bestVal) {
+                        nextMoveRow = row;
+                        nextMoveColumn = column;
+                        bestVal = value;
                     }
                 }
             }
         }
+
         
         
         submitMove(nextMoveRow, nextMoveColumn);
@@ -171,7 +166,7 @@ public class Dooley_Jon extends Player {
         }
     }
 
-    public double miniMax(char[][] gameBoardCopy, int depth, boolean isMaximizingPlayer) {
+    public double miniMax(char[][] gameBoardCopy, int depth, boolean isMaximizingPlayer, double alpha, double beta) {
 
         // check to see if the game is in a terminal state
         int state = terminalState(gameBoardCopy);
@@ -202,10 +197,14 @@ public class Dooley_Jon extends Player {
 
                         // get the score of the move we just made by recursively calling the
                         // miniMax algorithm
-                        best = Math.max(best, miniMax(gameBoardCopy, depth + 1, !isMaximizingPlayer));
+                        best = Math.max(best, miniMax(gameBoardCopy, depth + 1, !isMaximizingPlayer, alpha, beta));
+                        alpha = Math.max(best, alpha);
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
+                    }
+                    if (beta <= alpha) {
+                        break;
                     }
                 }
             }
@@ -229,10 +228,14 @@ public class Dooley_Jon extends Player {
                         gameBoardCopy[row][column] = enemyPlayer;
 
                         // get the score of the move we just made by recursively calling the miniMax algorithm
-                        best = Math.min(best, miniMax(gameBoardCopy,  depth + 1, !isMaximizingPlayer)); 
+                        best = Math.min(best, miniMax(gameBoardCopy,  depth + 1, !isMaximizingPlayer, alpha, beta)); 
+                        beta = Math.min(best, beta);
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
+                    }
+                    if (beta <= alpha) {
+                        break;
                     }
                 }
             }
