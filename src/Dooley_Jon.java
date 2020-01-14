@@ -44,7 +44,7 @@ public class Dooley_Jon extends Player {
                         gameBoardCopy[row][column] = ourPlayer;
 
                         // compute evaluation for this move
-                        double value = miniMax(gameBoardCopy, 0, false);
+                        double value = miniMax(gameBoardCopy, false);
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
@@ -171,7 +171,7 @@ public class Dooley_Jon extends Player {
         }
     }
 
-    public double miniMax(char[][] gameBoardCopy, int depth, boolean isMaximizingPlayer) {
+    public double miniMax(char[][] gameBoardCopy, boolean isMaximizingPlayer) {
 
         // check to see if the game is in a terminal state
         int state = terminalState(gameBoardCopy);
@@ -202,7 +202,7 @@ public class Dooley_Jon extends Player {
 
                         // get the score of the move we just made by recursively calling the
                         // miniMax algorithm
-                        best = Math.max(best, miniMax(gameBoardCopy, depth + 1, !isMaximizingPlayer));
+                        best = Math.max(best, miniMax(gameBoardCopy, !isMaximizingPlayer));
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
@@ -229,7 +229,7 @@ public class Dooley_Jon extends Player {
                         gameBoardCopy[row][column] = enemyPlayer;
 
                         // get the score of the move we just made by recursively calling the miniMax algorithm
-                        best = Math.min(best, miniMax(gameBoardCopy,  depth + 1, !isMaximizingPlayer)); 
+                        best = Math.min(best, miniMax(gameBoardCopy, !isMaximizingPlayer)); 
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
