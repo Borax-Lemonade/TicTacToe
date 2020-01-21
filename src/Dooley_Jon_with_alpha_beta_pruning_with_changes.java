@@ -2,7 +2,7 @@ import java.util.Dictionary;
 import java.util.Map;
 import java.lang.Math;
 
-public class Dooley_Jon_with_alpha_beta_pruning extends Player {
+public class Dooley_Jon_with_alpha_beta_pruning_with_changes extends Player {
 
     public static char ourPlayer;
     public static char enemyPlayer;
