@@ -2,7 +2,7 @@ import java.util.Dictionary;
 import java.util.Map;
 import java.lang.Math;
 
-public class Dooley_Jon extends Player {
+public class Dooley_Jon_with_alpha_beta_pruning extends Player {
 
     public static char ourPlayer;
     public static char enemyPlayer;
@@ -22,7 +22,6 @@ public class Dooley_Jon extends Player {
         
         // get the best possible move using the minimax algorithm:
         char[][] gameBoardCopy = gameBoard;
-        double bestVal = Double.NEGATIVE_INFINITY;
 
         // if middle space is empty, go there
         if (gameBoardCopy[1][1] == enemyPlayer) {
@@ -45,7 +44,7 @@ public class Dooley_Jon extends Player {
                         gameBoardCopy[row][column] = ourPlayer;
 
                         // compute evaluation for this move
-                        double value = miniMax(gameBoardCopy, false);
+                        double value = miniMax(gameBoardCopy, false, Double.MIN_VALUE, Double.MAX_VALUE);
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
@@ -62,6 +61,41 @@ public class Dooley_Jon extends Player {
             }
             submitMove(nextMoveRow, nextMoveColumn);
         }
+
+
+        double bestVal = Double.NEGATIVE_INFINITY;
+
+        // if middle block is empty, go there
+        // loop through all cells in gameboard
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0 ; column < 3; column++) {
+
+                // check if cell is empty
+                if (!(gameBoardCopy[row][column] == 'X' || gameBoardCopy[row][column] == 'O')) {
+
+                    // save the current board value
+                    char boardValue = gameBoardCopy[row][column];
+
+                    // make move at this empty cell
+                    gameBoardCopy[row][column] = ourPlayer;
+
+                    // compute evaluation for this move
+                    double value = miniMax(gameBoardCopy, false, Double.MIN_VALUE, Double.MAX_VALUE);
+
+                    // undo the move
+                    gameBoardCopy[row][column] = boardValue;
+
+                    // if the value of the current move is more
+                    // than the best value, then update the best
+                    if (value > bestVal) {
+                        nextMoveRow = row;
+                        nextMoveColumn = column;
+                        bestVal = value;
+                    }
+                }
+            }
+        }
+        submitMove(nextMoveRow, nextMoveColumn);
 
     }
 
@@ -170,7 +204,7 @@ public class Dooley_Jon extends Player {
         }
     }
 
-    public double miniMax(char[][] gameBoardCopy, boolean isMaximizingPlayer) {
+    public double miniMax(char[][] gameBoardCopy, boolean isMaximizingPlayer, double alpha, double beta) {
 
         // check to see if the game is in a terminal state
         int state = terminalState(gameBoardCopy);
@@ -201,10 +235,14 @@ public class Dooley_Jon extends Player {
 
                         // get the score of the move we just made by recursively calling the
                         // miniMax algorithm
-                        best = Math.max(best, miniMax(gameBoardCopy, !isMaximizingPlayer));
+                        best = Math.max(best, miniMax(gameBoardCopy, !isMaximizingPlayer, alpha, beta));
+                        alpha = Math.max(best, alpha);
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
+                    }
+                    if (beta <= alpha) {
+                        break;
                     }
                 }
             }
@@ -228,10 +266,14 @@ public class Dooley_Jon extends Player {
                         gameBoardCopy[row][column] = enemyPlayer;
 
                         // get the score of the move we just made by recursively calling the miniMax algorithm
-                        best = Math.min(best, miniMax(gameBoardCopy, !isMaximizingPlayer)); 
+                        best = Math.min(best, miniMax(gameBoardCopy, !isMaximizingPlayer, alpha, beta)); 
+                        beta = Math.min(best, beta);
 
                         // undo the move
                         gameBoardCopy[row][column] = boardValue;
+                    }
+                    if (beta <= alpha) {
+                        break;
                     }
                 }
             }
