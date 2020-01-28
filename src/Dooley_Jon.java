@@ -24,47 +24,39 @@ public class Dooley_Jon extends Player {
         char[][] gameBoardCopy = gameBoard;
         double bestVal = Double.NEGATIVE_INFINITY;
 
-        // if middle space is empty, go there
-        if (!(gameBoardCopy[1][1] == enemyPlayer) ||
-            !(gameBoardCopy[1][1] == ourPlayer)) {
-            submitMove(1, 1);
-        }
-        // else if not, proceed with minimax
-        else {
-            // if middle block is empty, go there
-            // loop through all cells in gameboard
-            for (int row = 0; row < 3; row++) {
-                for (int column = 0 ; column < 3; column++) {
+        // loop through all cells in gameboard
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0 ; column < 3; column++) {
 
-                    // check if cell is empty
-                    if (!(gameBoardCopy[row][column] == 'X' || gameBoardCopy[row][column] == 'O')) {
+                // check if cell is empty
+                if (!(gameBoardCopy[row][column] == 'X' || gameBoardCopy[row][column] == 'O')) {
 
-                        // save the current board value
-                        char boardValue = gameBoardCopy[row][column];
+                    // save the current board value
+                    char boardValue = gameBoardCopy[row][column];
 
-                        // make move at this empty cell
-                        gameBoardCopy[row][column] = ourPlayer;
+                    // make move at this empty cell
+                    gameBoardCopy[row][column] = ourPlayer;
 
-                        // compute evaluation for this move
-                        double value = miniMax(gameBoardCopy, false);
+                    // compute evaluation for this move
+                    double value = miniMax(gameBoardCopy, false);
 
-                        // undo the move
-                        gameBoardCopy[row][column] = boardValue;
+                    // undo the move
+                    gameBoardCopy[row][column] = boardValue;
 
-                        // if the value of the current move is more
-                        // than the best value, then update the best
-                        if (value > bestVal) {
-                            nextMoveRow = row;
-                            nextMoveColumn = column;
-                            bestVal = value;
-                        }
+                    // if the value of the current move is more
+                    // than the best value, then update the best
+                    if (value > bestVal) {
+                        nextMoveRow = row;
+                        nextMoveColumn = column;
+                        bestVal = value;
                     }
                 }
             }
-            submitMove(nextMoveRow, nextMoveColumn);
         }
-
+        submitMove(nextMoveRow, nextMoveColumn);
     }
+
+    
 
     // Return null if game is not in a terminal state,
     // return public static variable "ourScore" if game is won by our player
