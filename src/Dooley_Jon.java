@@ -25,8 +25,8 @@ public class Dooley_Jon extends Player {
         double bestVal = Double.NEGATIVE_INFINITY;
 
         // if middle space is empty, go there
-        if ((gameBoardCopy[1][1] == enemyPlayer) ||
-             gameBoardCopy[1][1] == ourPlayer) {
+        if (!(gameBoardCopy[1][1] == enemyPlayer) ||
+            !(gameBoardCopy[1][1] == ourPlayer)) {
             submitMove(1, 1);
         }
         // else if not, proceed with minimax
