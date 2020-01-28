@@ -1,0 +1,7 @@
+time testing
+
+DJ ALPHA BETA 1,288,280 ns
+DJ             650,126  ns
+
+DJ ALPHA BETA + CHANGE
+DJ + CHANGE
